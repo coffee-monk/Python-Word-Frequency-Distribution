@@ -1,0 +1,54 @@
+<<< APPLICATION SUMMARY >>>
+- perform frequenecy-distribution analysis on a group of text documents in a directory
+- INPUT     - path to directory containing text documents to analyze
+- OUTPUTS   - frequency-distribution plot as .png
+            - pairs of words & their counts as .csv
+
+<<< INSTALL, CUSTOMIZE, & RUN APPLICATION >>>
+
+(1) Install Python
+
+- Go to URL and install Python 3:
+https://www.python.org/downloads/
+- Run Installer
+
+(2) Install Windows-Terminal
+
+- Go to URL and download Windows-Terminal:
+https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab
+- Run Installer
+
+(3) Program Folder Setup
+
+- Unzip folder and place it where you want to use it
+- Open Windows-Terminal (use default Powershell) as Administrator
+- Enter into working folder in terminal using "cd" command 
+
+(4) Install Python App
+
+- Open "install.txt" file in current directory
+- copy all lines of code, and paste them into Windows-Terminal
+- hit ENTER and all dependencies will be installed
+- all libraries will be installed locally, so just delete the folder to remove program and dependencies
+
+(5) HOW TO RUN APPLICATION
+
+- With everything installed, now you can Run the python application with the following command:
+
+    python .\word_freqdist_app.py
+
+- You will be prompted to provide the directory-path of the folder that holds your multiple text documents to analyze (multiple doc formats supported)
+- The path must have the following format (depending on if you are using WindowsOS or LinuxOS)
+(windows):  C:\Users\User\Desktop\text_directory\
+(linux):    /home/user/Desktop/text_directory/
+
+(6) Customize Analysis with Stopwords
+
+- You can edit the custom_stopwords.py file to customize your frequency distribution analysis
+- add stopwords to the new_stopwords array, in order to filter specific words out of the analysis (eg. words like 'the', 'a', etc.) 
+- add stopwords to the ignore_stopwords array, in order to remove words from the default stopwords list
+
+(7) Customize Figure Output
+
+- Change values in the figure_parameters.py file to edit the figure image output
+- WARNING: do not change the fig_params object, or it will break the algorithm!
