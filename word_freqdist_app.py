@@ -55,7 +55,7 @@ if (os.name == "posix" and os.path.isfile(os.getcwd() + "/custom_stopwords.py"))
     stop_words = stop_words.union(new_stopwords)
     stop_words = set([word for word in stop_words if word not in ignore_stopwords])
 else:
-    print("WARNING: File 'custom_stopwords.py' is not detected in working directory")
+    print("WARNING: File 'custom_stopwords.py' is not detected in current directory \n")
 
 ### Process text_files & Complete Word Counts ----------------------------------
 
@@ -70,40 +70,52 @@ for w in tokenized_words:
 # Create Frequency-Distribution-List
 fdist = FreqDist(tokenized_words_filtered)
 
-flist = [['Word', 'Frequency']]
+flist = [["Word", "Frequency"]]
 for key in fdist.keys():
     flist.append([key, str(fdist[key])])
 
 # Write to dated file
 myFile_name = "Freq_Dist_" + time.strftime("%Y-%m-%d-%S") + ".csv"
-myFile = open(myFile_name, 'x')
+myFile = open(myFile_name, "x")
 with myFile:
     writer = csv.writer(myFile)
     writer.writerows(flist)
 
 # Remove blank lines from CSV if they exist
 df = pd.read_csv(myFile_name)
-df.dropna(axis=0, how='all', inplace=True)
+df.dropna(axis=0, how="all", inplace=True)
+
+# Save analysis to file
 df.to_csv(myFile_name, index=False)
+print(
+    "\nSUCCESS: "
+    + str(df.shape[0])
+    + " words analyzed\n"
+    + "- Analysis saved in current directory: "
+    + myFile_name
+)
 
 # Plot
-df = pd.read_csv(myFile_name)
-print(df)
-fig = plt.figure(figsize=(fig_params["width"], fig_params["height"]))
-x = np.arange(0, df.shape[0])
-y = df['Frequency'].to_list()
-print(len(x), " ", len(y))
-plt.plot(x, y)
-plt.show()
+if df.shape[0] >= fig_params["num_words"]:
+    df = pd.read_csv(myFile_name)
+    fig = plt.figure(figsize=(fig_params["width"], fig_params["height"]))
+    x = df["Word"][0 : fig_params["num_words"]].to_list()
+    y = df["Frequency"][0 : fig_params["num_words"]].to_list()
+    plt.plot(x, y)
+    plt.xticks(rotation=90)
 
-# # Frequency Distribution Plot
-# plt.ion()
-# fig = plt.figure(figsize=(fig_params["width"], fig_params["height"]))
-# fdist.plot(fig_params["num_words"], cumulative=False)
-# fig_title = "Fdist_Plot_" + time.strftime("%Y-%m-%d-%S")
-# fig.savefig(os.getcwd() + "\\" + fig_title)
-# # fig.savefig(fig_title)
-# plt.ioff()
-# plt.show()
+    fig_title = "Fdist_Plot_" + time.strftime("%Y-%m-%d-%S")
+    if os.name == "posix":
+        fig.savefig(os.getcwd() + "/" + fig_title)
+        print("- Plot saved in current directory: " + fig_title + ".png")
+    elif os.name == "nt":
+        fig.savefig(os.getcwd() + "\\" + fig_title)
+        print("- Plot saved in current directory: " + fig_title + ".png")
+    else:
+        print("WARNING: OS not recognized. Plot not saved to file.")
 
-print("Success!")
+    plt.show()
+else:
+    print(
+        "WARNING: Figure parameter value 'number_of_words_plotted' is larger than list of analyzed words. Reduce value of 'number_of_words_plotted' in 'figure_parameters.py' to correct error and plot the figure. \n"
+    )

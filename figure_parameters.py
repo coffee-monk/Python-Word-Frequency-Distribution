@@ -1,7 +1,7 @@
 # User Input: User can change these values to modify plot
 fig_width = 15
 fig_height = 8
-number_of_words_plotted = 1
+number_of_words_plotted = 15
 
 # Values exported to algorithm
 fig_params = {
